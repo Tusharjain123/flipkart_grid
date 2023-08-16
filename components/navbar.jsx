@@ -52,12 +52,8 @@ export const Navbar = () => {
                             </button>
                         </li>
                     )}
-                    <li className="hidden md:block">Become a Seller</li>
-                    <li className="flex items-center">
-                        <span className="material-symbols-outlined ml-2">shopping_cart</span>
-                        Cart
-                    </li>
                     {session && (
+                        <>
                         <li className="overflow-hidden rounded-3xl">
                             <img
                                 src={session.user.image}
@@ -66,6 +62,10 @@ export const Navbar = () => {
                                 height={40}
                             ></img>
                         </li>
+                        <li className="overflow-hidden rounded-3xl">
+                            {session.user.name}
+                        </li>
+                        </>
                     )}
                     {session && (
                         <li>
