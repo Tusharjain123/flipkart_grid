@@ -20,20 +20,26 @@ export default function Home() {
     getData()
   }, [])
 
+  const addData = async () => {
+    await fetch("")
+  }
+
   return (
     <div className='min-h-screen min-w-screen'>
       <Navbar />
       {/* <Hero/> */}<div className='flex flex-wrap justify-evenly items-center'>
         {products && products.map((ele) => {
+          const reviewsObject = JSON.parse(ele.Reviews.replace(/'/g, "\""));
           return <Card
             name={ele.Name}
             brand={ele.Brand}
             image={ele.Image}
             price={ele.Price}
             rating={ele.Rating}
-            users={ele.Reviews}
+            review={reviewsObject.reviews}
+            index = {ele.Index}
+            breadcrumbs={ele.BreadCrumbs}
           />
-
         })}</div>
     </div>
   )
