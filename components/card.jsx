@@ -7,15 +7,15 @@ export const Card = ({ name, brand, image, price, rating, review,index,breadcrum
   // console.log(count)
   const router = useRouter()
   const handleClick = async () =>{
-    // await fetch("http://localhost:5000/api/flipkart/addproduct",{
-    //   method:"POST",
-    //   headers:{
-    //     "Content-Type" : "application/json"
-    //   },
-    //   body: JSON.stringify({
-    //     name, brand, image, price, rating, review ,index, breadcrumbs
-    //   })
-    // })
+    await fetch("http://localhost:5000/api/flipkart/addproduct",{
+      method:"POST",
+      headers:{
+        "Content-Type" : "application/json"
+      },
+      body: JSON.stringify({
+        name, brand, image, price, rating, review ,index, breadcrumbs
+      })
+    })
     router.push({pathname:"/product", query: {id: index}})
   }
   return (

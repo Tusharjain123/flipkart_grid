@@ -6,18 +6,28 @@ import { useState, useEffect } from 'react'
 export default function Home() {
   const [products, setProducts] = useState()
   useEffect(() => {
-    const getData = async () => {
-      const response = await fetch("https://flipkart-backend-qn4j.onrender.com/api/flipkart/allproducts", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-      const data = await response.json()
-      console.log(data)
+    // const getData = async () => {
+    //   const response = await fetch("https://flipkart-backend-qn4j.onrender.com/api/flipkart/allproducts", {
+    //     method: "GET",
+    //     headers: {
+    //       "Content-Type": "application/json"
+    //     }
+    //   })
+    //   const data = await response.json()
+    //   setProducts(data)
+    // }
+    // getData()
+
+    fetch("http://localhost:5000/recommend", {
+      method: "POST",
+      body: JSON.stringify({"Brand": 'Nike'}),
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(res => res.json()).then(data => {
+      console.log(data);
       setProducts(data)
-    }
-    getData()
+    })
   }, [])
 
   const addData = async () => {
