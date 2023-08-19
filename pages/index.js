@@ -20,7 +20,7 @@ export default function Home() {
 
     fetch("http://localhost:5000/recommend", {
       method: "POST",
-      body: JSON.stringify({"Brand": 'Nike'}),
+      body: JSON.stringify({ "Brand": 'Nike' }),
       headers: {
         'content-type': 'application/json'
       }
@@ -37,20 +37,25 @@ export default function Home() {
   return (
     <div className='min-h-screen min-w-screen'>
       <Navbar />
-      {/* <Hero/> */}<div className='flex flex-wrap justify-evenly items-center'>
+      {/* <Hero/> */}
+      <div className='flex flex-wrap justify-evenly items-center'>
         {products && products.map((ele) => {
-          const reviewsObject = JSON.parse(ele.Reviews.replace(/'/g, "\""));
-          return <Card
-            name={ele.Name}
-            brand={ele.Brand}
-            image={ele.Image}
-            price={ele.Price}
-            rating={ele.Rating}
-            review={reviewsObject.reviews}
-            index = {ele.Index}
-            breadcrumbs={ele.BreadCrumbs}
-          />
-        })}</div>
+          {/* const reviewsObject = JSON.parse(ele.Reviews); */}
+          return (
+            <Card
+              key={ele.Index}
+              name={ele.Name}
+              brand={ele.Brand}
+              image={ele.Image}
+              price={ele.Price}
+              rating={ele.Rating}
+              // review={reviewsObject.reviews}
+              index={ele.Index}
+              breadcrumbs={ele.BreadCrumbs}
+            />
+          );
+        })}
+      </div>
     </div>
   )
 }

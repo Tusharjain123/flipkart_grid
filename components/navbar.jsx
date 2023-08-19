@@ -13,6 +13,18 @@ export const Navbar = () => {
         })
     };
 
+    const handleSearch = async () => {
+        const response = await fetch("http://localhost:5000/chat", {
+            method: "POST",
+            headers:{
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify({message: search})
+        })
+        const data = await response.json()
+        console.log(data)
+    }
+
     return (
         <div className="bg-[#2874f0] p-4">
             <div className="flex justify-center gap-16 items-center">
@@ -36,7 +48,7 @@ export const Navbar = () => {
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                         />
-                        <span className="material-symbols-outlined absolute top-1/2 transform -translate-y-1/2 left-2">
+                        <span className="material-symbols-outlined absolute top-1/2 transform -translate-y-1/2 left-2" onClick={handleSearch}>
                             search
                         </span>
                     </div>
