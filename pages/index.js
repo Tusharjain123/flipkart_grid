@@ -7,7 +7,7 @@ export default function Home() {
   const [products, setProducts] = useState()
   useEffect(() => {
     const getData = async () => {
-      const response = await fetch("https://flipkart-backend-qn4j.onrender.com/api/flipkart/allproducts", {
+      const response = await fetch("https://flipkart-backend-qn4j.onrender.com/api/flipkart/random", {
         method: "GET",
         headers: {
           "Content-Type": "application/json"
