@@ -26,9 +26,11 @@ export const Card = ({ name, brand, image, price, rating, review,index,breadcrum
       <div className="p-4">
         <div className="text-lg font-semibold mb-2">{name}</div>
         <div className="flex items-center text-sm text-gray-500 mb-2">
-          <span className="mr-1">{rating}</span>
+        <span className="mr-1">{brand}</span>
+
           <span className="mr-1">•</span>
-          <span>{review}</span>
+          <span className="mr-1">{rating}</span>
+
         </div>
         <div className="text-lg font-semibold text-orange-500 mb-2">Rs. {price}</div>
         <div className="mt-auto">

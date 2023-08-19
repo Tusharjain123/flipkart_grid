@@ -2,9 +2,11 @@ import { Navbar } from "@/components/navbar";
 import { Card } from "@/components/card";
 import { Hero } from "@/components/hero";
 import { useState, useEffect } from "react";
+import Loader from "@/components/loader";
 
 export default function Home() {
   const [products, setProducts] = useState();
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
     // const getData = async () => {
     //   const response = await fetch(
@@ -20,10 +22,9 @@ export default function Home() {
     //   setProducts(data);
     // };
     // getData();
-
+    setLoading(true)
     fetch("http://localhost:5000/recommend", {
-      method: "POST",
-      body: JSON.stringify({ Brand: "Adidas", Name: "tshirts" }),
+      method: "GET",
       headers: {
         "content-type": "application/json",
       },
@@ -32,38 +33,40 @@ export default function Home() {
       .then((data) => {
         console.log(data);
         setProducts(data);
+        setLoading(false)
       });
   }, []);
-
-  const addData = async () => {
-    await fetch("");
-  };
 
   return (
     <div className="min-h-screen min-w-screen">
       <Navbar setProducts={setProducts} />
+      {
+        loading ?
+          <Loader />
+          : <div className="flex flex-wrap justify-evenly items-center">
+            {products &&
+              products.map((ele) => {
+                {
+                  /* const reviewsObject = JSON.parse(ele.Reviews); */
+                }
+                return (
+                  <Card
+                    key={ele.Index}
+                    name={ele.Name}
+                    brand={ele.Brand}
+                    image={ele.Image}
+                    price={ele.Price}
+                    rating={ele.Rating}
+                    // review={reviewsObject.reviews}
+                    index={ele.Index}
+                    breadcrumbs={ele.BreadCrumbs}
+                  />
+                );
+              })}
+          </div>
+      }
       {/* <Hero/> */}
-      <div className="flex flex-wrap justify-evenly items-center">
-        {products &&
-          products.map((ele) => {
-            {
-              /* const reviewsObject = JSON.parse(ele.Reviews); */
-            }
-            return (
-              <Card
-                key={ele.Index}
-                name={ele.Name}
-                brand={ele.Brand}
-                image={ele.Image}
-                price={ele.Price}
-                rating={ele.Rating}
-                // review={reviewsObject.reviews}
-                index={ele.Index}
-                breadcrumbs={ele.BreadCrumbs}
-              />
-            );
-          })}
-      </div>
+
     </div>
   );
 }

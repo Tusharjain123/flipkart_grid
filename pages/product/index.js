@@ -12,7 +12,7 @@ export default function Product() {
         if (id) {
             const fetchData = async () => {
                 try {
-                    const response = await fetch(`http://localhost:5000/api/flipkart/product?id=${id}`);
+                    const response = await fetch(`http://localhost:5001/api/flipkart/product?id=${id}`);
                     const data = await response.json();
                     setProduct(data);
                 } catch (error) {
