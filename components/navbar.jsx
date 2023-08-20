@@ -93,14 +93,22 @@ export const Navbar = ({ setProducts }) => {
                         </>
                     )}
                     {session && (
-                        <li>
-                            <button
-                                className="p-2 rounded-[8px] px-6 cursor-pointer bg-white text-[#2874f0]"
-                                onClick={handleSignOut}
-                            >
-                                Logout
-                            </button>
-                        </li>
+                        <>
+                            <li>
+                                <button
+                                    className="p-2 rounded-[8px] px-6 cursor-pointer bg-white text-[#2874f0]"
+                                    onClick={handleSignOut}
+                                >
+                                    Logout
+                                </button>
+                            </li>
+                            <div className="flex justify-center mt-4 text-white sm:mt-0 cursor-pointer" onClick={()=>router.push("/purchased")}>
+                                <div className="border border-white rounded-lg p-2">
+                                    <p>Orders</p>
+                                </div>
+                            </div>
+                        </>
+
                     )}
                 </ul>
             </div>

@@ -1,11 +1,13 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { Card } from "@/components/card";
 
 export default function Product() {
     const router = useRouter();
     const { id } = router.query;
     const [product, setProduct] = useState(null);
+    const {data: session} = useSession()
 
     useEffect(() => {
         // Only fetch data if id is available
@@ -37,7 +39,7 @@ export default function Product() {
             "Content-Type" : "application/json"
           },
           body: JSON.stringify({
-            name: Name, brand: Brand, image: Image, price:Price, rating: Rating, review: JSON.parse(Reviews.replace(/'/g, "\"")).reviews ,index: Index, breadcrumbs: BreadCrumbs
+            name: Name, brand: Brand, image: Image, price:Price, rating: Rating, review: JSON.parse(Reviews.replace(/'/g, "\"")).reviews ,index: Index, breadcrumbs: BreadCrumbs, user: {email : session.user.email, name : session.user.name}
           })
         })
       }
