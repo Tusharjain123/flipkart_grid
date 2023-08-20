@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import authCheck from "@/Wrapper/authcheck";
 import { Navbar } from "@/components/navbar";
+import Image from "next/image";
 
 function Product() {
     const [products, setProduct] = useState(null);
@@ -50,6 +51,10 @@ function Product() {
                             );
                         })}
                 </div>}
+            </div>
+            <div onClick={() => router.push("/guide")} className="fixed right-10 p-4 rounded-[25%] cursor-pointer bg-[#fecdd3] bottom-10">
+                <div className="absolute -left-24 -top-4 border-2 border-black p-2 bg-white rounded-[10px] ">Need any Help ?</div>
+                <Image src="/chatbot.png" alt="chatbot" width={100} height={100} />
             </div>
         </div>
     );

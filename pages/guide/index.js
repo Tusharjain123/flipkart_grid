@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Card } from "@/components/card";
 import Loader from "@/components/loader";
 import { Navbar } from "@/components/navbar";
@@ -6,7 +6,9 @@ import { Navbar } from "@/components/navbar";
 export default function Guide() {
     const [query, setQuery] = useState("");
     const [productdata, setData] = useState([]);
+    const [chatHistory, setChatHistory] = useState([]);
     const [loading, setLoading] = useState(false);
+    const chatHistoryRef = useRef(null);
 
     const handleChange = (e) => {
         setQuery(e.target.value);
@@ -14,20 +16,24 @@ export default function Guide() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setData([]);
         setLoading(true);
-        
         try {
+            var new_query = query + ","
+            chatHistory.map((ele) => new_query+= ele.message + "," ) 
+            console.log(new_query)
+
             const response = await fetch("http://localhost:5000/chat", {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
                 },
-                body: JSON.stringify({ message: query }),
+                body: JSON.stringify({ message: new_query }),
             });
             const data = await response.json();
             setData(data);
-            setQuery("")
+            setChatHistory((prevHistory) => [...prevHistory, { type: "user", message: query, output: data }]);
+            chatHistoryRef.current.scrollTop = chatHistoryRef.current.scrollHeight;
+            setQuery("");
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -35,18 +41,51 @@ export default function Guide() {
         setLoading(false);
     };
 
+    useEffect(() => {
+        chatHistoryRef.current.scrollTop = chatHistoryRef.current.scrollHeight;
+    }, [chatHistory]);
+
     return (
         <div className="flex flex-col h-screen">
             <Navbar />
-            <div className="flex-1 p-10 bg-gray-100 overflow-y-auto">
-                <div className="p-4">
+            <div className="flex-1 p-6 bg-gray-100 overflow-y-auto">
+                <div className="p-2">
                     <h1 className="text-3xl text-center">Flipkart Guide</h1>
                     <p className="text-center">Your one stop solution for finding product</p>
                 </div>
-                <div className="flex flex-col justify-between bg-white h-[85%] rounded-lg shadow-lg overflow-hidden">
-                    <div className="flex-3 justify-evenly p-4 overflow-x-auto flex">
+                <div ref={chatHistoryRef} className="flex flex-col justify-between bg-white h-full md:h-[90%] mx-auto rounded-lg shadow-lg overflow-auto">
+                    {!loading && chatHistory.map((entry, index) => (
+                        <div className="w-[80%] mx-auto">
+                            <div key={index} className="relative -right-[87%] bg-[#c5ddff] w-fit flex justify-end text-xl rounded-br-[20px] rounded-l-[20px] py-3 px-6 m-4 text-black mb-2">
+                                {entry.message}
+                            </div>
+                            {entry?.output && <div key={index} className="flex justify-evenly  text-xl rounded-bl-[20px] rounded-r-[20px] py-3 px-6 m-4 text-black ">
+                                {(entry.output).map((ele) => {
+                                    const reviewsObject = JSON.parse(ele.Reviews.replace(/'/g, "\""));
+                                    return (
+                                        <Card
+                                            key={ele.Index}
+                                            name={ele.Name}
+                                            brand={ele.Brand}
+                                            image={ele.Image}
+                                            price={ele.Price}
+                                            rating={ele.Rating}
+                                            review={reviewsObject.reviews}
+                                            index={ele.Index}
+                                            breadcrumbs={ele.BreadCrumbs}
+                                            className="mr-4"
+                                        />
+                                    );
+                                })}
+                            </div>}
+                        </div>
+                    ))}
+                    {
+                       loading && <div className="text-center text-gray-500 text-2xl m-4">Bot is thinking...</div>
+                    }
+                    {/* <div className="flex-1 md:flex-3 p-4 overflow-x-auto md:flex-wrap flex">
                         {loading ? (
-                            <div className="text-gray-500 text-2xl">Bot is thinking...</div>
+                            <div className="text-gray-500 text-2xl w-full text-center">Bot is thinking...</div>
                         ) : (
                             productdata.map((ele) => {
                                 const reviewsObject = JSON.parse(ele.Reviews.replace(/'/g, "\""));
@@ -61,14 +100,14 @@ export default function Guide() {
                                         review={reviewsObject.reviews}
                                         index={ele.Index}
                                         breadcrumbs={ele.BreadCrumbs}
-                                        className="mr-4" // Adjust spacing between cards
+                                        className="mr-4"
                                     />
                                 );
                             })
                         )}
-                    </div>
-                    <form className="p-4 border-t">
-                        <div className="flex">
+                    </div> */}
+                    <form className="p-4 border-t md:sticky -bottom-1 w-[80%] mx-auto left-0 right-0 bg-white z-10">
+                        <div className="flex justify-between items-center">
                             <input
                                 type="text"
                                 name="query"

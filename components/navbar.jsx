@@ -17,25 +17,25 @@ export const Navbar = ({ setProducts, setLoading }) => {
     };
 
     const handleSearch = async (event) => {
-        event.preventDefault();
-        setLoading(true);
-        const response = await fetch("http://localhost:5000/chat", {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json",
-            },
-            body: JSON.stringify({ message: search }),
-        });
-        const data = await response.json();
-        setProducts(data);
-        setLoading(false);
-        console.log(data);
+        // event.preventDefault();
+        // setLoading(true);
+        // const response = await fetch("http://localhost:5000/chat", {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-type": "application/json",
+        //     },
+        //     body: JSON.stringify({ message: search }),
+        // });
+        // const data = await response.json();
+        // setProducts(data);
+        // setLoading(false);
+        // console.log(data);
     };
 
     return (
         <div className="bg-[#2874f0] p-4">
             <div className="flex flex-col md:flex-row justify-center items-center">
-                <div className="flex items-center mb-4 md:mb-0">
+                <div className="flex items-center justify-evenly mb-4 md:mb-0">
                     <Link href="/">
                         <div className="p-2">
                             <Image

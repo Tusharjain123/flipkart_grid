@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { addCart } from './addcart'
-
+import {recommendData} from './RecommendData'
 
 export default configureStore({
   reducer: {
-    addCart
+    recommendData: recommendData.reducer
   }
 })

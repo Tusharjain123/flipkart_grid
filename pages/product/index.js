@@ -5,6 +5,9 @@ import Loader from "@/components/loader";
 import authCheck from "@/Wrapper/authcheck";
 import { Navbar } from "@/components/navbar";
 import { Card } from "@/components/card";
+import { recommendData, selectData } from "@/redux/RecommendData";
+import { useSelector } from "react-redux";
+import Image from "next/image";
 
 function Product() {
     const router = useRouter();
@@ -13,42 +16,46 @@ function Product() {
     const { data: session } = useSession()
     const [loading, setLoading] = useState(false)
     const [purchased, setPurchased] = useState(false)
-    const [recommendData, setRecommend] = useState()
+    const [suggestedData, setSuggestedData] = useState()
 
-    useEffect(() => {
-        if (id) {
-            setLoading(true)
-            const fetchData = async () => {
-                try {
-                    const response = await fetch(`http://localhost:5001/api/flipkart/product?id=${id}`);
-                    const data = await response.json();
-                    setProduct(data);
-                } catch (error) {
-                    console.error(error);
-                }
-            };
-            fetchData();
-            setLoading(false)
-        }
-    }, [id]);
+    const { currentItem, status } = useSelector(selectData)
+
+    if (currentItem == {}) {
+        return null
+    }
+
+    // useEffect(() => {
+    //     if (id) {
+    //         setLoading(true)
+    //         const fetchData = async () => {
+    //             try {
+    //                 const response = await fetch(`http://localhost:5001/api/flipkart/product?id=${id}`);
+    //                 const data = await response.json();
+    //                 setProduct(data);
+    //             } catch (error) {
+    //                 console.error(error);
+    //             }
+    //         };
+    //         fetchData();
+    //         setLoading(false)
+    //     }
+    // }, [id]);
 
     const handleClick = async (e) => {
         e.preventDefault()
-        setLoading(true)
-        const { Brand, Name, Rating, Reviews, Image, Price, Index, BreadCrumbs } = product
-        console.log(JSON.parse(Reviews.replace(/'/g, "\"")).reviews)
+        const { brand, name, rating, review, image, price, index, breadcrumbs } = currentItem
         await fetch("http://localhost:5001/api/flipkart/purchase", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                name: Name, brand: Brand, image: Image, price: Price, rating: Rating, review: JSON.parse(Reviews.replace(/'/g, "\"")).reviews, index: Index, breadcrumbs: BreadCrumbs
+                name, brand, image, price, rating, review, index, breadcrumbs
             })
         })
         setPurchased(true)
-        setLoading(false)
     }
+
     useEffect(() => {
         const recommend = async (breadcrumbs) => {
             setLoading(true);
@@ -61,36 +68,36 @@ function Product() {
                     body: JSON.stringify({ message: breadcrumbs }),
                 });
                 const data = await response.json();
-                setRecommend(data);
+                setSuggestedData(data);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }
             setLoading(false);
         }
-        if (product?.BreadCrumbs) {
-            recommend(product.BreadCrumbs)
+        if (currentItem !== {}) {
+            recommend(currentItem.breadcrumbs)
         }
-    }, [product])
+    }, [currentItem])
     return (
         <>
             <Navbar />
-            {loading ? (
+            {status == 'loading' ? (
                 <Loader />
             ) : (
-                product && (
+                currentItem && (
                     <div className="flex flex-wrap border rounded-lg justify-center items-start p-4 shadow-md w-[70%] mx-auto m-8">
                         <img
-                            src={product.Image}
-                            alt={product.Name}
+                            src={currentItem.image}
+                            alt={currentItem.name}
                             className="h-96 w-full md:w-64 object-contain mx-auto "
                         />
                         <div className="max-w-lg overflow-hidden mx-4 p-4">
                             <div>
-                                <h1 className="text-2xl md:text-4xl font-semibold my-2">{product.Name}</h1>
-                                <p className="text-gray-600">{product.Brand}</p>
+                                <h1 className="text-2xl md:text-4xl font-semibold my-2">{currentItem.name}</h1>
+                                <p className="text-gray-600">{currentItem.brand}</p>
                             </div>
-                            <p className="font-bold mt-2">Price: {product.Price}</p>
-                            <p className="mt-1">Rating: {product.Rating}</p>
+                            <p className="font-bold mt-2">Price: {currentItem.price}</p>
+                            <p className="mt-1">Rating: {currentItem.rating}</p>
                             <button
                                 className={`${purchased ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
                                     } text-white font-semibold py-2 px-4 rounded-md mt-4 w-full md:w-auto`}
@@ -109,8 +116,8 @@ function Product() {
                     {loading ? (
                         <Loader />
                     ) : (
-                        recommendData &&
-                        recommendData.map((ele) => {
+                        suggestedData &&
+                        suggestedData.map((ele) => {
                             const reviewsObject = JSON.parse(ele.Reviews.replace(/'/g, "\""));
                             return (
                                 <Card
@@ -129,6 +136,10 @@ function Product() {
                         })
                     )}
                 </div>
+            </div>
+            <div onClick={() => router.push("/guide")} className="fixed right-10 p-4 rounded-[25%] cursor-pointer bg-[#fecdd3] bottom-10">
+                <div className="absolute -left-24 -top-4 border-2 border-black p-2 bg-white rounded-[10px] ">Need any Help ?</div>
+                <Image src="/chatbot.png" alt="chatbot" width={100} height={100} />
             </div>
         </>
     );

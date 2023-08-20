@@ -5,42 +5,55 @@ import { useState, useEffect } from "react";
 import Loader from "@/components/loader";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRecommendData, selectData } from "@/redux/RecommendData";
 
 export default function Home() {
   const router = useRouter()
   const [products, setProducts] = useState();
   const [loading, setLoading] = useState(false)
+
+  const {data, status} = useSelector(selectData)
+
+  const dispatch = useDispatch()
+  // useEffect(() => {
+  //   try {
+  //     setLoading(true)
+  //     fetch("http://localhost:5000/recommend", {
+  //       method: "GET",
+  //       headers: {
+  //         "content-type": "application/json",
+  //       },
+  //     })
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         console.log(data);
+  //         setProducts(data);
+  //         setLoading(false)
+  //       });
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+  // }, []);
+
   useEffect(() => {
-    try {
-      setLoading(true)
-      fetch("http://localhost:5000/recommend", {
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          setProducts(data);
-          setLoading(false)
-        });
-    } catch (err) {
-      console.log(err)
+    if(status != 'fulfilled') {
+      dispatch(fetchRecommendData());
     }
-  }, []);
+  },[])
+
   return (
     <div className="min-h-screen min-w-screen">
       <Navbar setProducts={setProducts} setLoading={setLoading} />
       {
-        loading ?
+        status == 'loading' ?
           <Loader />
           :
           <div className="m-8">
             <h1 className="text-center text-3xl">Trending Products</h1>
             <div className="flex flex-wrap justify-evenly items-center">
-              {products &&
-                products.map((ele) => {
+              {data &&
+                data.map((ele) => {
                   const reviewsObject = JSON.parse(ele.Reviews.replace(/'/g, "\""));
                   return (
                     <Card
