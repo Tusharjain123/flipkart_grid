@@ -18,8 +18,8 @@ export default function Guide() {
         e.preventDefault();
         setLoading(true);
         try {
-            var new_query = query + ","
-            chatHistory.map((ele) => new_query+= ele.message + "," ) 
+            var new_query = query + " "
+            chatHistory.map((ele) => new_query+= ele.message + " " ) 
             console.log(new_query)
 
             const response = await fetch("http://localhost:5000/chat", {

@@ -50,7 +50,7 @@ export default function Home() {
           <Loader />
           :
           <div className="m-8">
-            <h1 className="text-center text-3xl">Trending Products</h1>
+            <h1 className="text-center text-3xl">Suggested Products</h1>
             <div className="flex flex-wrap justify-evenly items-center">
               {data &&
                 data.map((ele) => {
