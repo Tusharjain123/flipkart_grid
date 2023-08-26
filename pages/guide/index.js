@@ -55,7 +55,7 @@ export default function Guide() {
                 </div>
                 <div ref={chatHistoryRef} className="flex flex-col justify-between bg-white h-full md:h-[90%] mx-auto rounded-lg shadow-lg overflow-auto">
                     {!loading && chatHistory.map((entry, index) => (
-                        <div className="w-[80%] mx-auto">
+                        <div className="w-[80%] mx-auto" key={index}>
                             <div key={index} className="relative -right-[87%] bg-[#c5ddff] w-fit flex justify-end text-xl rounded-br-[20px] rounded-l-[20px] py-3 px-6 m-4 text-black mb-2">
                                 {entry.message}
                             </div>

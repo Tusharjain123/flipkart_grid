@@ -40,6 +40,7 @@ export default function Home() {
     if(status != 'fulfilled') {
       dispatch(fetchRecommendData());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   return (

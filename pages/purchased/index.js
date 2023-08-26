@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import authCheck from "@/Wrapper/authcheck";
 import { Navbar } from "@/components/navbar";
 import Image from "next/image";
+import Loader from "@/components/loader";
 
 function Product() {
     const [products, setProduct] = useState(null);

@@ -19,11 +19,6 @@ function Product() {
     const [suggestedData, setSuggestedData] = useState()
 
     const { currentItem, status } = useSelector(selectData)
-
-    if (currentItem == {}) {
-        return null
-    }
-
     // useEffect(() => {
     //     if (id) {
     //         setLoading(true)
@@ -78,6 +73,10 @@ function Product() {
             recommend(currentItem.breadcrumbs)
         }
     }, [currentItem])
+
+    if (currentItem == {}) {
+        return null
+    }
     return (
         <>
             <Navbar />

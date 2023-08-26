@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 
 const data = [{
@@ -37,8 +38,8 @@ export const Hero = () => {
         <div className='flex  gap-16 items-center justify-center bg-white p-4 rounded-lg shadow-md shadow-none md:shadow'>
             {data.map((ele, index) => {
                 return (
-                    <div className='flex flex-col items-center'>
-                        <img src={ele.img} alt={`item - ${index}`} width={60} height={50} />
+                    <div className='flex flex-col items-center' key={index}>
+                        <Image src={ele.img} alt={`item - ${index}`} width={60} height={50} />
                         <p>{ele.name}</p>
                     </div>
                 )

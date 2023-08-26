@@ -87,12 +87,12 @@ export const Navbar = ({ setProducts, setLoading }) => {
                     {session && (
                         <>
                             <li className="overflow-hidden rounded-full mb-2 md:mb-0">
-                                <img
+                                <Image
                                     src={session.user.image}
                                     alt="Profile"
                                     width={40}
                                     height={40}
-                                ></img>
+                                ></Image>
                             </li>
                             <li className="overflow-hidden mb-2 md:mb-0">
                                 {session.user.name}
