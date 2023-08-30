@@ -22,7 +22,7 @@ export default function Guide() {
             chatHistory.map((ele) => new_query+= ele.message + " " ) 
             console.log(new_query)
 
-            const response = await fetch("http://localhost:5000/chat", {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_FLASK}chat`, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json",
@@ -83,29 +83,6 @@ export default function Guide() {
                     {
                        loading && <div className="text-center text-gray-500 text-2xl m-4">Bot is thinking...</div>
                     }
-                    {/* <div className="flex-1 md:flex-3 p-4 overflow-x-auto md:flex-wrap flex">
-                        {loading ? (
-                            <div className="text-gray-500 text-2xl w-full text-center">Bot is thinking...</div>
-                        ) : (
-                            productdata.map((ele) => {
-                                const reviewsObject = JSON.parse(ele.Reviews.replace(/'/g, "\""));
-                                return (
-                                    <Card
-                                        key={ele.Index}
-                                        name={ele.Name}
-                                        brand={ele.Brand}
-                                        image={ele.Image}
-                                        price={ele.Price}
-                                        rating={ele.Rating}
-                                        review={reviewsObject.reviews}
-                                        index={ele.Index}
-                                        breadcrumbs={ele.BreadCrumbs}
-                                        className="mr-4"
-                                    />
-                                );
-                            })
-                        )}
-                    </div> */}
                     <form className="p-4 border-t md:sticky -bottom-1 w-[80%] mx-auto left-0 right-0 bg-white z-10">
                         <div className="flex justify-between items-center">
                             <input

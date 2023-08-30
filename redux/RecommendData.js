@@ -4,7 +4,7 @@ export const fetchRecommendData = createAsyncThunk(
   'recommendData/fetchData',
   async () => {
     try {
-      const response = await fetch("http://localhost:5000/recommend", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_FLASK}recommend`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

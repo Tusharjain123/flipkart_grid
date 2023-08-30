@@ -19,27 +19,10 @@ function Product() {
     const [suggestedData, setSuggestedData] = useState()
 
     const { currentItem, status } = useSelector(selectData)
-    // useEffect(() => {
-    //     if (id) {
-    //         setLoading(true)
-    //         const fetchData = async () => {
-    //             try {
-    //                 const response = await fetch(`http://localhost:5001/api/flipkart/product?id=${id}`);
-    //                 const data = await response.json();
-    //                 setProduct(data);
-    //             } catch (error) {
-    //                 console.error(error);
-    //             }
-    //         };
-    //         fetchData();
-    //         setLoading(false)
-    //     }
-    // }, [id]);
-
     const handleClick = async (e) => {
         e.preventDefault()
         const { brand, name, rating, review, image, price, index, breadcrumbs } = currentItem
-        await fetch("http://localhost:5001/api/flipkart/purchase", {
+        await fetch(`${process.env.NEXT_PUBLIC_BACKEND}api/flipkart/purchase`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -55,7 +38,7 @@ function Product() {
         const recommend = async (breadcrumbs) => {
             setLoading(true);
             try {
-                const response = await fetch("http://localhost:5000/chat", {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_FLASK}chat`, {
                     method: "POST",
                     headers: {
                         "Content-type": "application/json",
@@ -129,7 +112,7 @@ function Product() {
                                     review={reviewsObject.reviews}
                                     index={ele.Index}
                                     breadcrumbs={ele.BreadCrumbs}
-                                    className="md:mr-4" // Adjust spacing between cards
+                                    className="md:mr-4"
                                 />
                             );
                         })

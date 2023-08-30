@@ -17,7 +17,7 @@ function Product() {
         setLoading(true)
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:5001/api/flipkart/getpurchased`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}api/flipkart/getpurchased`);
                 const data = await response.json();
                 console.log(data.purchased)
                 setProduct(data.purchased);
