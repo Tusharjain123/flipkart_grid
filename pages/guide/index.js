@@ -2,9 +2,13 @@ import { useState, useRef, useEffect } from "react";
 import { Card } from "@/components/card";
 import Loader from "@/components/loader";
 import { Navbar } from "@/components/navbar";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export default function Guide() {
     const [query, setQuery] = useState("");
+    const router = useRouter()
+    const session = useSession();
     const [productdata, setData] = useState([]);
     const [chatHistory, setChatHistory] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -14,12 +18,18 @@ export default function Guide() {
         setQuery(e.target.value);
     };
 
+    useEffect(() => {
+        if (session.status === "unauthenticated") {
+            router.push("/signin");
+        }
+    }, [session])
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
             var new_query = query + " "
-            chatHistory.map((ele) => new_query+= ele.message + " " ) 
+            chatHistory.map((ele) => new_query += ele.message + " ")
             console.log(new_query)
 
             const response = await fetch(`${process.env.NEXT_PUBLIC_FLASK}chat`, {
@@ -81,7 +91,7 @@ export default function Guide() {
                         </div>
                     ))}
                     {
-                       loading && <div className="text-center text-gray-500 text-2xl m-4">Bot is thinking...</div>
+                        loading && <div className="text-center text-gray-500 text-2xl m-4">Bot is thinking...</div>
                     }
                     <form className="p-4 border-t md:sticky -bottom-1 w-[80%] mx-auto left-0 right-0 bg-white z-10">
                         <div className="flex justify-between items-center">

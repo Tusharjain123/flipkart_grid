@@ -7,34 +7,23 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRecommendData, selectData } from "@/redux/RecommendData";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
   const router = useRouter()
+  const session = useSession();
   const [products, setProducts] = useState();
   const [loading, setLoading] = useState(false)
 
   const {data, status} = useSelector(selectData)
+  console.log(session)
+  useEffect(()=>{
+    if (session.status === "unauthenticated") {
+      router.push("/signin");
+  }
+  },[session])
 
   const dispatch = useDispatch()
-  // useEffect(() => {
-  //   try {
-  //     setLoading(true)
-  //     fetch("http://localhost:5000/recommend", {
-  //       method: "GET",
-  //       headers: {
-  //         "content-type": "application/json",
-  //       },
-  //     })
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         console.log(data);
-  //         setProducts(data);
-  //         setLoading(false)
-  //       });
-  //   } catch (err) {
-  //     console.log(err)
-  //   }
-  // }, []);
 
   useEffect(() => {
     if(status != 'fulfilled') {

@@ -14,6 +14,12 @@ function Product() {
     const router = useRouter();
 
     useEffect(() => {
+        if (session.status === "unauthenticated") {
+            router.push("/signin");
+        }
+    }, [session])
+
+    useEffect(() => {
         setLoading(true)
         const fetchData = async () => {
             try {
