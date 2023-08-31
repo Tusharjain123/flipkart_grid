@@ -13,14 +13,7 @@ function Product() {
     const { data: session } = useSession()
     const router = useRouter();
 
-    if (session.status === "loading") {
-        return null
-    }    
-    if (session.status === "unauthenticated") {
-        router.push("/signin");
-        return null
-    }
-
+ 
     useEffect(() => {
         setLoading(true)
         const fetchData = async () => {
@@ -37,6 +30,15 @@ function Product() {
         setLoading(false)
 
     }, []);
+
+    if (session.status === "loading") {
+        return null
+    }    
+    if (session.status === "unauthenticated") {
+        router.push("/signin");
+        return null
+    }
+
     return (
         <div className="w-screen h-screen">
             <Navbar />

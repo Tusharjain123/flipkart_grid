@@ -18,13 +18,7 @@ export default function Guide() {
         setQuery(e.target.value);
     };
 
-    if (session.status === "loading") {
-        return null
-    }    
-    if (session.status === "unauthenticated") {
-        router.push("/signin");
-        return null
-    }
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -56,6 +50,14 @@ export default function Guide() {
     useEffect(() => {
         chatHistoryRef.current.scrollTop = chatHistoryRef.current.scrollHeight;
     }, [chatHistory]);
+
+    if (session.status === "loading") {
+        return null
+    }    
+    if (session.status === "unauthenticated") {
+        router.push("/signin");
+        return null
+    }
 
     return (
         <div className="flex flex-col h-screen">
