@@ -26,10 +26,10 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
-  if(session.status == "loading") {
+  if(session?.status == "loading") {
     return null
   }
-  if (session.status === "unauthenticated" ) {
+  if (session?.status === "unauthenticated" ) {
     router.push("/signin");
     return null
 }
