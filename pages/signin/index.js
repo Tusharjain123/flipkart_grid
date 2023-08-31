@@ -7,6 +7,7 @@ export default function Signin() {
 
   if(session){
     router.push("/")
+    return null
   }
 
   return (

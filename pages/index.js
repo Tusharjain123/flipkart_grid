@@ -16,13 +16,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
 
   const {data, status} = useSelector(selectData)
-  console.log(session)
-  useEffect(()=>{
-    if (session.status === "unauthenticated") {
-      router.push("/signin");
-  }
-  },[session])
-
+  
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -31,6 +25,14 @@ export default function Home() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
+
+  if(session.status == "loading") {
+    return null
+  }
+  if (session.status === "unauthenticated" ) {
+    router.push("/signin");
+    return null
+}
 
   return (
     <div className="min-h-screen min-w-screen">

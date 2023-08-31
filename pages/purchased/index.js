@@ -13,11 +13,13 @@ function Product() {
     const { data: session } = useSession()
     const router = useRouter();
 
-    useEffect(() => {
-        if (session.status === "unauthenticated") {
-            router.push("/signin");
-        }
-    }, [session])
+    if (session.status === "loading") {
+        return null
+    }    
+    if (session.status === "unauthenticated") {
+        router.push("/signin");
+        return null
+    }
 
     useEffect(() => {
         setLoading(true)
